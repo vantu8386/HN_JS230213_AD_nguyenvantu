@@ -35,12 +35,12 @@ route.get("/:id", async (req, res) => {
 });
 
 route.post("/", async (req, res) => {
-  const { name, email, age } = req.body;
+  const { name, description} = req.body;
   try {
-    await db.execute("INSERT INTO users ( name, email, age) VALUES (?,?,?)", [
+    await db.execute("INSERT INTO users ( name, description) VALUES (?,?)", [
       name,
-      email,
-      age,
+      description,
+   
     ]);
     // console.log(dataUsers);
     res.status(200).json({
@@ -55,11 +55,11 @@ route.post("/", async (req, res) => {
 
 route.patch("/:id", async (req, res) => {
   const { id } = req.params;
-  const { name, email, age } = req.body;
+  const { name, description } = req.body;
   try {
     const dataUsers = await db.execute(
-      "UPDATE users SET name =?, email =?, age=? WHERE id_user = ? ",
-      [name, email, age, id]
+      "UPDATE users SET name =?, description =? WHERE id_user = ? ",
+      [name, description, id]
     );
     if (dataUsers[0].affectedRows === 0) {
       res.status(404).json({
@@ -69,8 +69,7 @@ route.patch("/:id", async (req, res) => {
       res.status(200).json({
         message: `Sửa thành công id: ${id}`,
         name: name,
-        email: email,
-        age: age,
+        description: description,
       });
     }
   } catch (error) {
@@ -89,7 +88,7 @@ route.delete("/:id", async (req, res) => {
     );
     if (dataUsers[0].affectedRows === 0) {
       res.status(404).json({
-        message: `Không tìm thấy id: ${id}},`,
+        message: `Không tìm thấy id: ${id}`,
       });
     } else {
       res.status(200).json({
